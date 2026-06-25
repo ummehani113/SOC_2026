@@ -21,11 +21,7 @@ plotly>=5.14.0
 
 # Financial Data & Market Simulation
 yfinance>=0.2.0
-<<<<<<< HEAD
 #pandas-ta>=0.3.14b
-=======
-# pandas-ta>=0.3.14b
->>>>>>> 6895c90b3ae99809e27dec037813e8ebe64429cb
 
 # Regime Detection & Sequence Models
 hmmlearn>=0.3.0
