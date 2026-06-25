@@ -198,42 +198,47 @@ def train_reinforce(
 
 
 if __name__ == "__main__":
-    returns, trained_policy = train_reinforce()
 
+    experiments = [
+        ("Baseline", 1e-2, 0.99),
+        ("High Learning Rate", 1e-1, 0.99),
+        ("Low Learning Rate", 1e-5, 0.99),
+        ("Low Gamma", 1e-2, 0.50),
+    ]
 
-# --- Task 2: add the plotting helper here ---
-import matplotlib.pyplot as plt
+    results = {}
 
-def plot_returns(returns, window=10, filename="plots/cartpole_rewards.png"):
-    import os
-    os.makedirs("plots", exist_ok=True)
+    for name, lr, gamma in experiments:
 
-    returns = np.array(returns)
-    x = np.arange(len(returns))
+        print("\n" + "=" * 60)
+        print(name)
+        print("=" * 60)
 
-    if len(returns) >= window:
-        sma = np.convolve(returns, np.ones(window)/window, mode="valid")
-    else:
-        sma = returns
+        returns, _ = train_reinforce(
+            learning_rate=lr,
+            gamma=gamma,
+            num_episodes=300,
+        )
 
-    plt.figure(figsize=(8, 4))
-    plt.plot(x, returns, alpha=0.3, label="Episode return")
-    plt.plot(np.arange(len(sma)), sma, label=f"{window}-episode moving avg")
-    plt.xlabel("Episode")
-    plt.ylabel("Return")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(filename)
-    plt.close()
+        results[name] = returns
 
+        print(f"\nLearning Rate : {lr}")
+        print(f"Gamma         : {gamma}")
+        print(f"Average Return (last 10 episodes): {np.mean(returns[-10:]):.2f}")
 
-# if __name__ == "__main__":
-#     returns, trained_policy = train_reinforce()
-#     plot_returns(returns)   # call it here so it actually runs and saves the plot
+    # ---------------- Plot all experiments ----------------
 
-if __name__ == "__main__":
-    returns, trained_policy = train_reinforce()
+    # import matplotlib.pyplot as plt
 
-    np.save("reinforce_returns.npy", returns)
+    # plt.figure(figsize=(10,6))
 
-    print("Saved reinforce_returns.npy")
+    # for name, returns in results.items():
+    #     plt.plot(returns, label=name)
+
+    # plt.xlabel("Episode")
+    # plt.ylabel("Episode Return")
+    # plt.title("REINFORCE Hyperparameter Comparison")
+    # plt.legend()
+    # plt.grid(True)
+
+    # plt.show()
