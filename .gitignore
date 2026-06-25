@@ -1,0 +1,12 @@
+# Python virtual environment
+marl-env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
